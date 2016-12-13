@@ -8,12 +8,34 @@ if ($_SESSION['login']=="1") {
 header ("Location: Home.php");
 }else{$_SESSION['login_msg']="Invalid";}
 }else{$_SESSION['login_msg']="";}
+/*
+require  'PHP/connection_new.php';
+$sql="select * from user";
+$result=mysqli_query($conect,$sql);
+while ($row=mysqli_fetch_array($result)){
+
+echo $row['USER_ID'] .'		'.$row['USER_NAME'].'		'.$row['PASSWORD'].'<BR/>';
+}
 
 
+$sql="select * from main_trn order by TRN_DATE";
+$result=mysqli_query($conect,$sql);
+while ($row=mysqli_fetch_array($result)){
+
+echo $row['1'] .'		'.$row['2'].'		'.$row['5'].'<BR/>';
+}*/
+/*$hashPass=generateHash_sha1('abc123');
+echo $hashPass;*/
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-require  'PHP/connection_new.php';
+/*require  'PHP/connection_new.php';
+$hashPass=generateHash_sha1('abc123');
+$sql="UPDATE user SET PASSWORD ='".$hashPass."' where USER_ID='0000000003' or USER_NAME='dismanthidissanaya@gmail.com' ";
+$result=mysqli_query($conect,$sql);*/
 
+if (!$result) {
+   die('Invalid query: ' . mysqli_error($conect));
+}
 
 $result=mysqli_query($conect,"SELECT USER_NAME,PASSWORD,USER_ID FROM `user` where USER_NAME='".$_POST["user"]."'  AND ACTIVE_STATUS='Y' ");
 if (!$result) {
@@ -24,7 +46,7 @@ if (!$result) {
 
 if($row=mysqli_fetch_array($result)){
 
-  if(verify($_POST["pass"],$row["PASSWORD"])){
+  if(verify_sha1($_POST["pass"],$row["PASSWORD"])){
   
   $_SESSION['user']=$row["USER_ID"];
   $_SESSION['login']="1";
@@ -32,7 +54,7 @@ if($row=mysqli_fetch_array($result)){
   
 }
 else{
-$error="Invalid Username or Password ";
+$error=$_POST["pass"]."			".$row["PASSWORD"];
 }
 
 
