@@ -4,15 +4,14 @@ require 'connection_new.php';
 require 'password_encryption.php';
 
 
-
 if($_POST['user']!=null && $_POST['name']!=null)
 {
 $name=$_POST['name'];
 $user=$_POST['user'];
 $pass=$_POST['pass'];
 
-$pass=generateHash($pass);
-
+//$pass=generateHash_sha1($pass);
+$pass=generateHash_sha1($pass);
 //$sql="INSERT INTO class VALUES('".$name."')";
       $sql="SELECT NEXT_VAL FROM user_seq";
       $result=mysqli_query($conect,$sql);
